@@ -1,0 +1,16 @@
+Helps bootstrap the erl release used by sinan shell on the latest erlang
+release.  The erl release is needed by `sinan shell` for your target erts
+version otherwise the shell will fail.
+
+For example, I've installed faxien built for R12B5 and sinan built for R12B5
+but the erl release is not available for R12B5.  If I have that erlang release
+installed you can use this bootstrapper to make the erl release yourself
+allowing you to use the `sinan shell` command.
+
+Run ./bootstrap and it will bootstrap off of `which erl` which should be
+the erlang release (ex. /usr/local/lib/erlang).  Adjust your paths if an
+older erlware erl binary is shown.
+
+If the release finishes run ./copy as the apropriate user to copy
+files over to your erlware directory and try out `sinan shell`.
+
