@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# -*- sh -*-
+
+RELEASE="R12B"
+ERTS_VSN=`erl -noshell -eval "io:format(\"~s\n\", [erlang:system_info(version)]), halt(0)."`
+ROOT_DIR=`erl -noshell -eval "io:format(\"~s\n\", [code:root_dir()]), halt(0)."`
+
+REL_VSN=$ERTS_VSN
+WORKING_DIR=`pwd`
+WORKING_BIN_DIR=$WORKING_DIR/erl-$ERTS_VSN/bin
+WORKING_RELEASE_DIR=$WORKING_DIR/erl-$ERTS_VSN/release
+TEMPLATE_BIN_DIR=`pwd`/template/bin
+
+# setup working directories
+echo -n "Setting up working directories..."
+mkdir -p $WORKING_BIN_DIR
+mkdir -p $WORKING_RELEASE_DIR
+echo "OK!"
+
+
+# copy bin files
+echo -n "Copying and updating template bin files..."
+cp $TEMPLATE_BIN_DIR/erl $WORKING_BIN_DIR
+sed -i '' "s/REL_VSN=.*/REL_VSN=$REL_VSN/g" $WORKING_BIN_DIR/erl
+sed -i '' "s/ERTS_VSN=.*/ERTS_VSN=$ERTS_VSN/g" $WORKING_BIN_DIR/erl
+
+cp $TEMPLATE_BIN_DIR/escript $WORKING_BIN_DIR
+sed -i '' "s/REL_VSN=.*/REL_VSN=$REL_VSN/g" $WORKING_BIN_DIR/escript
+sed -i '' "s/ERTS_VSN=.*/ERTS_VSN=$ERTS_VSN/g" $WORKING_BIN_DIR/escript
+
+cp $TEMPLATE_BIN_DIR/run_erl $WORKING_BIN_DIR
+sed -i '' "s/REL_VSN=.*/REL_VSN=$REL_VSN/g" $WORKING_BIN_DIR/run_erl
+sed -i '' "s/ERTS_VSN=.*/ERTS_VSN=$ERTS_VSN/g" $WORKING_BIN_DIR/run_erl
+
+cp $TEMPLATE_BIN_DIR/to_erl $WORKING_BIN_DIR
+sed -i '' "s/REL_VSN=.*/REL_VSN=$REL_VSN/g" $WORKING_BIN_DIR/to_erl
+sed -i '' "s/ERTS_VSN=.*/ERTS_VSN=$ERTS_VSN/g" $WORKING_BIN_DIR/to_erl
+
+cp $TEMPLATE_BIN_DIR/erlc $WORKING_BIN_DIR
+echo "OK!"
+
+
+# Generate release file
+echo -n "Generating erl release scripts..."
+$ROOT_DIR/bin/escript release $WORKING_DIR $RELEASE
+echo "done."
+

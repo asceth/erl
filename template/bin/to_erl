@@ -1,0 +1,12 @@
+#!/bin/sh
+
+#### Fill in values for these variables ####
+APP_NAME=to_erl
+REL_VSN=
+ERTS_VSN=
+###########################################
+
+PREFIX=$(cd $(dirname $(dirname $0)); pwd)
+
+exec $PREFIX/packages/$ERTS_VSN/erts-$ERTS_VSN/bin/$APP_NAME "$@"
+

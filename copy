@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# -*- sh -*-
+
+ERLWARE_DIR=/usr/local/erlware
+ERTS_VSN=`erl -noshell -eval "io:format(\"~s\n\", [erlang:system_info(version)]), halt(0)."`
+ROOT_DIR=`erl -noshell -eval "io:format(\"~s\n\", [code:root_dir()]), halt(0)."`
+
+WORKING_DIR=`pwd`
+WORKING_BIN_DIR=$WORKING_DIR/erl-$ERTS_VSN/bin
+WORKING_RELEASE_DIR=$WORKING_DIR/erl-$ERTS_VSN/release
+
+
+# Copy binary scripts into place
+echo -n "Copying erl files to erlware..."
+cp $WORKING_BIN_DIR/* $ERLWARE_DIR/bin
+chmod u+x $ERLWARE_DIR/bin/*
+# Copy erl release into place
+cp -r $WORKING_DIR/erl* $ERLWARE_DIR/release_packages/
+echo "done."
+
+
